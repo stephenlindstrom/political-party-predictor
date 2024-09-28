@@ -6,6 +6,10 @@ public class Main {
 
         PoliticalPartyPredictor ppp = new PoliticalPartyPredictor();
         
+        /*
+        Since the data for each party is stored in separate files, must get the data
+        and train the model for each party.
+         */
         ArrayList<String[]> republicanData = ppp.getData("Republican");
         ppp.train(republicanData, "Republican", questions);
 
@@ -23,10 +27,9 @@ public class Main {
 
         String predictedParty = ppp.classify(surveyAnswers, questions);
         System.out.println("I'm guessing you belong to the " + predictedParty + " party");
+        System.out.println();
 
         String partyAffiliation = politicalSurvey.getPartyAffiliation();
         politicalSurvey.addSurveyData(surveyAnswers, partyAffiliation);    
     }
-
-
 }

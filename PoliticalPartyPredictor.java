@@ -69,8 +69,11 @@ public class PoliticalPartyPredictor {
         return bestParty;
     }
 
-    
-
+    /*
+    Method that retrieves data file for given party and returns an ArrayList
+    with each entry being an array of strings that correspond to answers to 
+    an individual survey.
+     */
     public ArrayList<String[]> getData(String party) {
         ArrayList<String[]> surveyAnswers = new ArrayList<String[]>();
         try {
@@ -84,7 +87,7 @@ public class PoliticalPartyPredictor {
             myReader.close();
         }
         catch (FileNotFoundException e) {
-            System.out.println("An error occurred");
+            System.out.println("File not found: Party-Data/" + party + ".txt");
             e.printStackTrace();
         }
         return surveyAnswers;

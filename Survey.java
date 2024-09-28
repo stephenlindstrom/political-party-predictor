@@ -1,5 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -32,6 +33,11 @@ public class Survey {
         {"A. Increase border security and deportations", "B. Reduce barriers to entry and decrease deportations", "C. Become tougher on illegal immigration, but broaden avenues for legal immigration"}
     };
 
+    /*
+    Method that displays the questions and answers of the survey in the console
+    and gathers the responses of the survey participant into an array that is 
+    returned.
+     */
     public String[] takeSurvey() {
         String[] surveyAnswers = new String[10];
         for (int i = 0; i < questions.length; i++) {
@@ -53,6 +59,12 @@ public class Survey {
         return surveyAnswers;
     }
 
+    /*
+    Method that displays question about survey participant's party affiliation
+    in the console and returns the response as a string. This is separate from
+    the rest of the survey to allow prediction to be made by the model before 
+    the participant reveals the correct answer.
+     */
     public String getPartyAffiliation() {
         System.out.println("What party do you belong to? ");
         System.out.println("    " + "A. Republican");
@@ -69,22 +81,32 @@ public class Survey {
         return partyAffiliation;
     }
 
+    /*
+    Method that writes the survey data to the appropriate file for the 
+    given party.
+     */
     public void addSurveyData(String[] surveyAnswers, String party) {
         String partyAffiliation;
-        if ("A".equals(party)) {
-            partyAffiliation = "Republican";
+        switch (party) {
+            case "A":
+                partyAffiliation = "Republican";
+                break;
+            case "B":
+                partyAffiliation = "Democratic";
+                break;
+            case "C":
+                partyAffiliation = "Libertarian";
+                break;
+            case "D":
+                partyAffiliation = "Green";
+                break;
+            default:
+                throw new NoSuchElementException("Party not found");
         }
-        else if ("B".equals(party)) {
-            partyAffiliation = "Democratic";
-        } 
-        else if ("C".equals(party)) {
-            partyAffiliation = "Libertarian";
-        }
-        else if ("D".equals(party)) {
-            partyAffiliation = "Green";
-        }
-        else {
-            throw new NoSuchElementException("Party not found");
+
+        File directory = new File("Party-Data");
+        if (!directory.exists()) {
+            directory.mkdir();
         }
 
         try {
@@ -96,7 +118,7 @@ public class Survey {
             myWriter.close();
         } 
         catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred while writing to Party-Data/" + partyAffiliation + ".txt");
             e.printStackTrace();
         }
     }
